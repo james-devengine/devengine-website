@@ -662,6 +662,7 @@
       .he-section { clip-path: none; }
       .he-hint { display: none !important; }
       .he-bg { opacity: 0.6 !important; }
+      .he-bg img { filter: none !important; }
       .he-media {
         width: 92vw !important;
         height: 52vh !important;
@@ -991,6 +992,7 @@
     var isMobile   = window.innerWidth < 768;
 
     var bg       = document.getElementById('he-bg');
+    var bgImg    = bg.querySelector('img');
     var media    = document.getElementById('he-media');
     var mediaDim = document.getElementById('he-media-dim');
     var wLeft    = document.getElementById('he-word-left');
@@ -1018,8 +1020,9 @@
       wLeft.style.transform  = 'translateX(-' + tx + 'vw)';
       wRight.style.transform = 'translateX('  + tx + 'vw)';
 
-      /* Fades */
-      bg.style.opacity       = (1 - p) * 0.6;
+      /* Background: desaturate to grey and fade — desktop only */
+      bgImg.style.filter     = 'grayscale(' + Math.round(p * 100) + '%) brightness(' + (1 - p * 0.2) + ')';
+      bg.style.opacity       = 1 - p * 0.75;
       mediaDim.style.opacity = Math.max(0, 0.5 - p * 0.3);
       hint.style.opacity     = Math.max(0, 1 - p * 4);
     }
@@ -1073,7 +1076,13 @@
 
     function onResize() {
       isMobile = window.innerWidth < 768;
-      if (!isMobile) render();
+      if (!isMobile) {
+        render();
+      } else {
+        /* Reset any inline styles set by the desktop animation */
+        bgImg.style.filter = '';
+        bg.style.opacity   = '';
+      }
     }
 
     if (!isMobile) {
