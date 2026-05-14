@@ -1022,7 +1022,7 @@
 
       /* Background: desaturate to grey and fade — desktop only */
       bgImg.style.filter     = 'grayscale(' + Math.round(p * 100) + '%) brightness(' + (1 - p * 0.2) + ')';
-      bg.style.opacity       = 1 - p * 0.75;
+      bg.style.opacity       = 1 - p;
       mediaDim.style.opacity = Math.max(0, 0.5 - p * 0.3);
       hint.style.opacity     = Math.max(0, 1 - p * 4);
     }
