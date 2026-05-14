@@ -39,7 +39,7 @@
       line-height: 1.65;
       color: var(--black);
       background: var(--white);
-      overflow-x: clip;
+      overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
     }
     img { display: block; max-width: 100%; }
@@ -428,6 +428,7 @@
       stroke: white; fill: none;
       stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
     }
+    .adv-text { flex: 1; min-width: 0; }
     .adv-text strong {
       display: block;
       font-family: var(--f-head);
