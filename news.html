@@ -1,0 +1,439 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>News — DevEngine</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --white:  #FFFFFF;
+      --silver: #DAD9D9;
+      --coral:  #C65C44;
+      --gray:   #7C7C7C;
+      --black:  #000000;
+      --f-head: 'Halyard Display', 'Plus Jakarta Sans', Arial, sans-serif;
+      --f-body: 'Poppins', sans-serif;
+      --nav-h:  80px;
+      --max-w:  1200px;
+      --pad-x:  clamp(1.5rem, 5vw, 5rem);
+      --pad-y:  clamp(4rem, 8vw, 8rem);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--f-body);
+      font-size: 1rem;
+      line-height: 1.65;
+      color: var(--black);
+      background: var(--white);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+
+    /* ── NAV ─────────────────────────────────────────────────────────── */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      -webkit-transform: translateZ(0); transform: translateZ(0); will-change: transform;
+      height: var(--nav-h);
+      background: var(--white);
+      border-bottom: 1px solid var(--silver);
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      padding: 0 var(--pad-x);
+    }
+    .nav-left { display: flex; align-items: center; gap: 2.25rem; }
+    .nav-left a {
+      font-size: 0.875rem; font-weight: 500; color: var(--gray);
+      letter-spacing: 0.02em; transition: color 0.18s;
+    }
+    .nav-left a:hover { color: var(--black); text-decoration: underline; }
+    .nav-left a.active { color: var(--black); text-decoration: underline; }
+    .nav-logo { justify-self: center; }
+    .nav-logo img { height: 46px; width: auto; display: block; }
+    .nav-right { display: flex; justify-content: flex-end; }
+    .nav-cta {
+      display: inline-flex; align-items: center;
+      background: var(--coral); color: var(--white) !important;
+      font-size: 0.875rem; font-weight: 500;
+      padding: 0.6rem 1.4rem; border-radius: 3px;
+      letter-spacing: 0.01em; transition: opacity 0.2s; white-space: nowrap;
+    }
+    .nav-cta:hover { opacity: 0.86; }
+
+    /* ── PAGE HERO ───────────────────────────────────────────────────── */
+    .page-hero {
+      margin-top: var(--nav-h);
+      background: var(--black);
+      background-image: url('home_page_photos/solar_farm_photo.webp');
+      background-size: cover;
+      background-position: center 40%;
+      padding: clamp(4rem, 7vw, 7rem) var(--pad-x);
+      position: relative; overflow: hidden;
+    }
+    /* Dark overlay so text stays legible over the photo */
+    .page-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: rgba(0, 0, 0, 0.62);
+      pointer-events: none;
+    }
+    .page-hero::after {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 80% at 90% 50%, rgba(198,92,68,0.18) 0%, transparent 65%),
+        radial-gradient(ellipse 30% 50% at 10% 90%, rgba(198,92,68,0.10) 0%, transparent 55%);
+      pointer-events: none;
+    }
+    .page-hero-inner {
+      position: relative; z-index: 1;
+      max-width: var(--max-w); margin: 0 auto;
+    }
+    .page-eyebrow {
+      font-size: 0.725rem; font-weight: 500;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--coral); margin-bottom: 1.25rem;
+      display: flex; align-items: center; gap: 0.75rem;
+    }
+    .page-eyebrow::before {
+      content: ''; width: 28px; height: 1.5px;
+      background: var(--coral); flex-shrink: 0;
+    }
+    .page-hero h1 {
+      font-family: var(--f-head);
+      font-size: clamp(2.5rem, 5.5vw, 4.5rem);
+      font-weight: 800; line-height: 1.06;
+      color: var(--white); letter-spacing: -0.02em;
+    }
+    .page-hero h1 em { font-style: normal; color: var(--coral); }
+    .page-hero-sub {
+      font-size: clamp(0.975rem, 1.4vw, 1.125rem);
+      color: rgba(255,255,255,0.52); max-width: 54ch;
+      margin-top: 1.25rem; line-height: 1.75; font-weight: 300;
+    }
+
+    /* ── NEWS GRID ───────────────────────────────────────────────────── */
+    .news-section {
+      padding: var(--pad-y) var(--pad-x);
+      background: var(--silver);
+    }
+    .news-inner { max-width: var(--max-w); margin: 0 auto; }
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.75rem;
+    }
+    .news-card {
+      background: var(--white);
+      display: flex; flex-direction: column;
+      border-top: 3px solid var(--coral);
+    }
+    .news-card-img {
+      height: 210px;
+      overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .news-card-img.logo-bg-dark { background: #111; }
+    .news-card-img.logo-bg-green { background: #f0faf4; }
+    .news-card-img img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+    .news-card-img.contains img {
+      object-fit: contain;
+      padding: 2rem;
+    }
+    .news-card-body {
+      padding: 1.875rem;
+      display: flex; flex-direction: column; flex: 1;
+    }
+    .news-meta {
+      font-size: 0.775rem; font-weight: 500; color: var(--gray);
+      letter-spacing: 0.05em; text-transform: uppercase;
+      margin-bottom: 0.875rem;
+    }
+    .news-card h3 {
+      font-family: var(--f-head);
+      font-size: 1.05rem; font-weight: 700;
+      color: var(--black); line-height: 1.42;
+      flex: 1; margin-bottom: 1.5rem;
+    }
+    .news-excerpt {
+      font-size: 0.9rem; color: var(--gray);
+      line-height: 1.72; margin-bottom: 1.5rem; font-weight: 300;
+    }
+    .news-link {
+      font-size: 0.875rem; font-weight: 500; color: var(--coral);
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      transition: gap 0.2s; margin-top: auto;
+    }
+    .news-link:hover { gap: 0.6rem; }
+
+    /* ── CTA BAND ────────────────────────────────────────────────────── */
+    .cta-band {
+      background: var(--coral);
+      padding: clamp(4.5rem, 8vw, 7.5rem) var(--pad-x);
+      text-align: center;
+    }
+    .cta-band h2 {
+      font-family: var(--f-head);
+      font-size: clamp(2.25rem, 4.5vw, 3.75rem);
+      font-weight: 800; color: var(--white);
+      letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 1rem;
+    }
+    .cta-band p {
+      font-size: 1.125rem; color: rgba(255,255,255,0.78);
+      margin-bottom: 2.75rem; max-width: 46ch;
+      margin-left: auto; margin-right: auto; font-weight: 300;
+    }
+    .btn-white {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--white); color: var(--coral);
+      font-family: var(--f-body); font-size: 0.9375rem; font-weight: 600;
+      padding: 0.9rem 2.25rem; border-radius: 3px; transition: opacity 0.2s;
+    }
+    .btn-white:hover { opacity: 0.9; }
+
+    /* ── FOOTER ──────────────────────────────────────────────────────── */
+    .footer {
+      background: var(--black);
+      padding: 4.5rem var(--pad-x) 2.5rem; color: var(--white);
+    }
+    .footer-inner { max-width: var(--max-w); margin: 0 auto; }
+    .footer-top {
+      display: grid; grid-template-columns: 1.6fr 1fr 1fr; gap: 3rem;
+      padding-bottom: 3rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 2rem;
+    }
+    .footer-logo img {
+      height: 42px; width: auto;
+      filter: brightness(0) invert(1); margin-bottom: 1.4rem;
+    }
+    .footer-desc {
+      font-size: 0.9rem; color: rgba(255,255,255,0.42); line-height: 1.72; max-width: 30ch;
+    }
+    .footer-col h4 {
+      font-family: var(--f-head); font-size: 0.72rem; font-weight: 600;
+      color: rgba(255,255,255,0.35); letter-spacing: 0.13em;
+      text-transform: uppercase; margin-bottom: 1.25rem;
+    }
+    .footer-col ul li { margin-bottom: 0.65rem; }
+    .footer-col ul li a, .footer-contact a {
+      font-size: 0.9rem; color: rgba(255,255,255,0.55);
+      transition: color 0.18s; display: block; margin-bottom: 0.5rem;
+    }
+    .footer-col ul li a:hover, .footer-contact a:hover { color: var(--white); }
+    .footer-bottom {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; flex-wrap: wrap;
+    }
+    .footer-copy { font-size: 0.8rem; color: rgba(255,255,255,0.25); }
+
+    /* ── HAMBURGER & MOBILE DROPDOWN ────────────────────────────────── */
+    .nav-hamburger {
+      display: none;
+      background: none; border: none; cursor: pointer;
+      padding: 0.4rem;
+      flex-direction: column;
+      gap: 5px;
+      align-items: center;
+    }
+    .nav-hamburger span {
+      display: block;
+      width: 22px; height: 2px;
+      background: var(--coral);
+      border-radius: 0; flex-shrink: 0;
+    }
+    .mob-dropdown {
+      position: fixed;
+      top: var(--nav-h); left: 0; right: 0;
+      width: 100%;
+      background: var(--coral);
+      z-index: 99;
+      transform: translateY(-110%);
+      transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+      padding: 1.25rem 1.5rem 1.75rem;
+      border-radius: 0;
+      flex-direction: column;
+      align-items: flex-end;
+      display: none;
+    }
+    .mob-dropdown.open { transform: translateY(0); }
+    .mob-dropdown a {
+      color: var(--white);
+      font-family: var(--f-head);
+      font-size: 1.05rem; font-weight: 500;
+      padding: 0.9rem 0; text-align: right; width: 100%;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      letter-spacing: 0.01em;
+    }
+    .mob-dropdown a:last-child { border-bottom: none; }
+    .mob-dropdown a.active { font-weight: 700; }
+
+    @media (max-width: 768px) {
+      .nav { padding: 0 1.25rem; }
+      .nav-left { display: none; }
+      .nav-right { display: none; }
+      .nav-logo { grid-column: 1; justify-self: start; }
+      .nav-logo img { height: 34px; }
+      .nav-hamburger { display: flex; align-items: center; grid-column: 3; justify-self: end; }
+      .mob-dropdown { display: flex; }
+      .news-grid { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr; gap: 2rem; }
+      .footer-desc { max-width: none; }
+    }
+  </style>
+  <link rel="stylesheet" href="transition.css">
+</head>
+<body>
+  <div id="ptt-overlay"></div>
+
+  <!-- ── NAV ──────────────────────────────────────────────────────────── -->
+  <nav class="nav">
+    <div class="nav-left">
+      <a href="index.html">Home</a>
+      <a href="news.html" class="active">News</a>
+      <a href="team.html">Our Team</a>
+    </div>
+    <a href="index.html" class="nav-logo" aria-label="DevEngine home">
+      <img src="brand_assets/devengine_logo_name.png" alt="DevEngine">
+    </a>
+    <div class="nav-right">
+      <a href="lets-partner.html" class="nav-cta">Let's Partner</a>
+    </div>
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+  <div class="mob-dropdown" id="mob-dropdown">
+    <a href="index.html">Home</a>
+    <a href="news.html" class="active">News</a>
+    <a href="team.html">Our Team</a>
+    <a href="lets-partner.html">Let's Partner</a>
+  </div>
+  <script>
+  (function(){
+    var btn  = document.getElementById('nav-hamburger');
+    var menu = document.getElementById('mob-dropdown');
+    if (!btn || !menu) return;
+    btn.addEventListener('click', function(){
+      var open = menu.classList.toggle('open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    menu.querySelectorAll('a').forEach(function(a){
+      a.addEventListener('click', function(){
+        menu.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+      });
+    });
+  })();
+  </script>
+
+  <!-- ── PAGE HERO ─────────────────────────────────────────────────────── -->
+  <section class="page-hero">
+    <div class="page-hero-inner">
+      <p class="page-eyebrow">Latest Updates</p>
+      <h1>In The <em>Press</em></h1>
+      <p class="page-hero-sub">News and announcements from DevEngine and our partners in the clean energy ecosystem.</p>
+    </div>
+  </section>
+
+  <!-- ── NEWS GRID ─────────────────────────────────────────────────────── -->
+  <section class="news-section">
+    <div class="news-inner">
+      <div class="news-grid">
+
+        <!-- Article 1 -->
+        <div class="news-card">
+          <div class="news-card-img logo-bg-green contains">
+            <img src="news_photos/altcrest_logo.png" alt="AltCrest Energy">
+          </div>
+          <div class="news-card-body">
+            <p class="news-meta">December 1, 2025</p>
+            <h3>AltCrest Energy, DevEngine, and Spring Lane Capital Launch $100M Canadian Energy Investment Strategy</h3>
+            <p class="news-excerpt">AltCrest Energy, DevEngine, and Spring Lane Capital announce a strategic partnership to invest $100 million CAD into the rapidly growing distributed energy resource sector across Canada.</p>
+            <a href="news-altcrest.html" class="news-link">Continue Reading →</a>
+          </div>
+        </div>
+
+        <!-- Article 2 -->
+        <div class="news-card">
+          <div class="news-card-img">
+            <img src="news_photos/axios_article_photo.webp" alt="DevEngine launches with $20 million">
+          </div>
+          <div class="news-card-body">
+            <p class="news-meta">March 7, 2024 · Axios</p>
+            <h3>Axios: DevEngine launches with $20 million</h3>
+            <p class="news-excerpt">DevEngine, a clean energy project incubator, has launched with $20 million in funding from Spring Lane Capital, the company tells Axios exclusively.</p>
+            <a href="news-axios.html" class="news-link">Continue Reading →</a>
+          </div>
+        </div>
+
+        <!-- Article 3 -->
+        <div class="news-card">
+          <div class="news-card-img logo-bg-dark contains">
+            <img src="brand_assets/DevEngine_logo.png" alt="DevEngine Launch">
+          </div>
+          <div class="news-card-body">
+            <p class="news-meta">March 7, 2024</p>
+            <h3>DevEngine Launches New Platform to Provide Sustainable Infrastructure Developers with Crucial Early Capital, Support and Services</h3>
+            <p class="news-excerpt">DevEngine announces its official launch as a platform connecting sustainable infrastructure developers with early-stage capital and expertise, anchored by $20 million from Spring Lane Capital.</p>
+            <a href="news-launch.html" class="news-link">Continue Reading →</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA BAND ──────────────────────────────────────────────────────── -->
+  <section class="cta-band">
+    <h2>Join the DevEngine Community</h2>
+    <p>Let's build the future of sustainable infrastructure together.</p>
+    <a href="lets-partner.html" class="btn-white">Get In Touch →</a>
+  </section>
+
+  <!-- ── FOOTER ────────────────────────────────────────────────────────── -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div>
+          <div class="footer-logo">
+            <img src="brand_assets/devengine_logo_name.png" alt="DevEngine">
+          </div>
+          <p class="footer-desc">Providing sustainable infrastructure developers with the capital and support to make their projects a reality.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Navigate</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="news.html">News</a></li>
+            <li><a href="team.html">Our Team</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <div class="footer-contact">
+            <a href="mailto:info@devengine.dev">info@devengine.dev</a>
+            <a href="tel:2124164475">212.416.4475</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">© DevEngine 2026. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="transition.js"></script>
+</body>
+</html>

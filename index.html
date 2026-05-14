@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DevEngine — Empowering Clean Energy Developers</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Plus Jakarta Sans ≈ Halyard Display substitute; Poppins for body -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
+
+
+  <style>
+    /* ── TOKENS ─────────────────────────────────────────────────────── */
+    :root {
+      --white:  #FFFFFF;
+      --silver: #DAD9D9;
+      --coral:  #C65C44;
+      --gray:   #7C7C7C;
+      --black:  #000000;
+
+      /* Halyard Display declared; Plus Jakarta Sans loads as visual stand-in */
+      --f-head: 'Halyard Display', 'Plus Jakarta Sans', Arial, sans-serif;
+      --f-body: 'Poppins', sans-serif;
+
+      --nav-h:  80px;
+      --max-w:  1500px;
+      --pad-x:  clamp(1.5rem, 5vw, 5rem);
+      --pad-y:  clamp(4rem, 8vw, 8rem);
+    }
+
+    /* ── RESET ───────────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--f-body);
+      font-size: 1rem;
+      line-height: 1.65;
+      color: var(--black);
+      background: var(--white);
+      overflow-x: clip;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+
+    /* ── NAV ─────────────────────────────────────────────────────────── */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: var(--nav-h);
+      background: var(--white);
+      border-bottom: 1px solid var(--silver);
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      padding: 0 var(--pad-x);
+      /* Force GPU layer — prevents iOS Safari overflow-x:hidden from breaking fixed */
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
+      will-change: transform;
+    }
+    .nav-left {
+      display: flex; align-items: center; gap: 2.25rem;
+    }
+    .nav-left a {
+      font-size: 0.875rem; font-weight: 500; color: var(--gray);
+      letter-spacing: 0.02em; transition: color 0.18s;
+    }
+    .nav-left a:hover { color: var(--black); text-decoration: underline; }
+    .nav-left a.active { color: var(--black); text-decoration: underline; }
+    .nav-logo { justify-self: center; }
+    .nav-logo img { height: 46px; width: auto; display: block; }
+    .nav-right { display: flex; justify-content: flex-end; }
+    .nav-cta {
+      display: inline-flex; align-items: center;
+      background: var(--coral);
+      color: var(--white) !important;
+      font-size: 0.875rem;
+      font-weight: 500;
+      padding: 0.6rem 1.4rem;
+      border-radius: 3px;
+      letter-spacing: 0.01em;
+      transition: opacity 0.2s;
+      white-space: nowrap;
+    }
+    .nav-cta:hover { opacity: 0.86; color: var(--white); }
+
+    /* ── HERO EXPANSION ──────────────────────────────────────────────── */
+    .he-section {
+      position: relative;
+      width: 100%;
+      height: calc(100vh - var(--nav-h));
+      margin-top: var(--nav-h);
+      clip-path: inset(0 0 -80px 0);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--silver);
+    }
+    .he-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+    .he-bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      max-width: none;
+    }
+    .he-bg-dim {
+      position: absolute;
+      inset: 0;
+      background: rgba(40,40,40,0.6);
+    }
+    .he-media {
+      position: absolute;
+      z-index: 1;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 0 50px rgba(0,0,0,0.35);
+      width: 65vw;
+      height: 60vh;
+      background: #000;
+      -webkit-transform: translate(-50%, -50%) translateZ(0);
+      clip-path: inset(2px round 14px);
+    }
+    .he-media video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 88%;
+      display: block;
+    }
+    .he-media-dim {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      border-radius: 14px;
+    }
+    .he-overlay {
+      position: absolute;
+      z-index: 10;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      pointer-events: none;
+      padding: 0 2rem;
+      gap: 0.2rem;
+    }
+    .he-word {
+      display: block;
+      font-family: var(--f-head);
+      font-size: clamp(2.8rem, 6.5vw, 5.75rem);
+      font-weight: 800;
+      color: #dbeafe;
+      line-height: 1.04;
+      letter-spacing: -0.02em;
+    }
+    .he-hint {
+      font-size: 0.85rem;
+      color: rgba(219,234,254,0.55);
+      font-weight: 500;
+      margin-top: 0.625rem;
+      letter-spacing: 0.025em;
+    }
+
+    /* ── SECTION SHELLS ──────────────────────────────────────────────── */
+    .section { padding: var(--pad-y) var(--pad-x); }
+    .inner { max-width: var(--max-w); margin: 0 auto; }
+
+    .label {
+      font-family: var(--f-body);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.17em;
+      text-transform: uppercase;
+      color: var(--coral);
+      margin-bottom: 0.9rem;
+      display: flex; align-items: center; gap: 0.65rem;
+    }
+    .label::before {
+      content: '';
+      width: 22px; height: 1.5px;
+      background: var(--coral);
+      flex-shrink: 0;
+    }
+    h2.title {
+      font-family: var(--f-head);
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 700;
+      line-height: 1.12;
+      letter-spacing: -0.015em;
+      color: var(--black);
+      margin-bottom: 1.25rem;
+    }
+    .body-copy {
+      font-size: 1.0625rem;
+      color: var(--gray);
+      line-height: 1.78;
+      max-width: 70ch;
+    }
+
+    /* ── MISSION ─────────────────────────────────────────────────────── */
+    .mission { background: var(--silver); }
+    .mission .inner {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: clamp(3rem, 6vw, 7rem);
+      align-items: center;
+    }
+    .mission-quote {
+      font-family: var(--f-head);
+      font-size: clamp(1.35rem, 2.2vw, 1.85rem);
+      font-weight: 600;
+      line-height: 1.45;
+      color: var(--black);
+      border-left: 4px solid var(--coral);
+      padding-left: 1.75rem;
+      font-style: normal;
+    }
+
+    /* ── PROBLEM ─────────────────────────────────────────────────────── */
+    .problem { background: var(--white); }
+    .problem .inner {
+      display: grid;
+      grid-template-columns: 0.75fr 1.25fr;
+      gap: clamp(2rem, 4vw, 5rem);
+      align-items: center;
+    }
+    .problem .body-copy + .body-copy { margin-top: 1.1rem; }
+    .problem-img-wrap {
+      margin-right: calc(-1 * var(--pad-x));
+    }
+    .problem-img-wrap img {
+      width: 100%;
+      display: block;
+    }
+
+    /* ── HOW WE WORK ─────────────────────────────────────────────────── */
+    .how { background: var(--silver); position: relative; }
+    .how .title { color: var(--black); }
+    .how .body-copy { color: var(--gray); }
+    .how-header {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: var(--pad-y) var(--pad-x) clamp(1.5rem, 3vw, 2.5rem);
+    }
+    .how-features { padding-bottom: var(--pad-y); }
+    .how-feature {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(3rem, 6vw, 7rem);
+      padding: clamp(1.75rem, 3.5vw, 3rem) var(--pad-x);
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+    .how-feature.reverse { flex-direction: row-reverse; }
+    .how-feature-text {
+      flex: 1;
+      max-width: 500px;
+      opacity: 0;
+      transform: translateY(50px);
+      will-change: transform, opacity;
+    }
+    .how-feature-text h3 {
+      font-family: var(--f-head);
+      font-size: clamp(1.75rem, 3vw, 2.6rem);
+      font-weight: 700;
+      color: var(--black);
+      line-height: 1.18;
+      letter-spacing: -0.015em;
+      margin-bottom: 1.1rem;
+    }
+    .how-feature-text p {
+      font-size: 1.0625rem;
+      color: var(--gray);
+      line-height: 1.78;
+    }
+    .how-feature-img {
+      flex: 1;
+      max-width: 540px;
+      overflow: hidden;
+      clip-path: inset(0 100% 0 0);
+      opacity: 0;
+      will-change: clip-path, opacity;
+    }
+    .how-feature-img img {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+      display: block;
+    }
+    @media (max-width: 768px) {
+      .how-feature,
+      .how-feature.reverse {
+        flex-direction: column;
+        gap: 2rem;
+        padding: clamp(2rem, 4vw, 3rem) var(--pad-x);
+      }
+      .how-feature-text { max-width: 100%; }
+      .how-feature-img  { max-width: 100%; width: 100%; }
+      .how-feature-img img { height: 240px; }
+    }
+
+    /* ── SECTORS ─────────────────────────────────────────────────────── */
+    .sectors-header {
+      background: var(--white);
+      padding-top: clamp(2rem, 4vw, 3.5rem);
+      padding-bottom: clamp(1.25rem, 2.5vw, 2rem);
+    }
+    .sectors-panels {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      background: var(--white);
+      padding: 0 var(--pad-x) var(--pad-y);
+    }
+    .sector-panel {
+      position: relative;
+      width: 100%;
+      height: 40vh;
+      overflow: hidden;
+      border-radius: 14px;
+    }
+    .sector-panel img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      max-width: none;
+      transition: transform 0.7s ease;
+    }
+    .sector-panel:hover img { transform: scale(1.03); }
+    .sector-panel-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.18) 45%, transparent 68%);
+      display: flex;
+      align-items: flex-end;
+    }
+    .sector-panel-text {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      width: 100%;
+      padding: 3.5rem var(--pad-x);
+    }
+    .sector-panel-label {
+      font-family: var(--f-body);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.17em;
+      text-transform: uppercase;
+      color: var(--coral);
+      margin-bottom: 0.7rem;
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+    .sector-panel-label::before {
+      content: '';
+      width: 22px; height: 1.5px;
+      background: var(--coral);
+      flex-shrink: 0;
+    }
+    .sector-panel h3 {
+      font-family: var(--f-head);
+      font-size: clamp(1.75rem, 3vw, 2.75rem);
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.15;
+      margin-bottom: 0.65rem;
+    }
+    .sector-panel p {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.68);
+      line-height: 1.72;
+      max-width: 54ch;
+    }
+
+    /* ── ADVANTAGE ───────────────────────────────────────────────────── */
+    .advantage { background: var(--silver); }
+    .advantage .inner {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: clamp(3rem, 6vw, 7rem);
+      align-items: start;
+    }
+    .adv-item {
+      display: flex; gap: 1.25rem; align-items: flex-start;
+      padding: 1.6rem 0;
+      border-bottom: 1px solid var(--silver);
+    }
+    .adv-item:first-child { padding-top: 0; border-top: 1px solid var(--silver); }
+    .adv-icon {
+      width: 38px; height: 38px; flex-shrink: 0;
+      background: var(--coral);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .adv-icon svg {
+      width: 17px; height: 17px;
+      display: block;
+      stroke: white; fill: none;
+      stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .adv-text strong {
+      display: block;
+      font-family: var(--f-head);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 0.25rem;
+    }
+    .adv-text p {
+      font-size: 0.9375rem;
+      color: var(--gray);
+      line-height: 1.68;
+    }
+
+    /* ── NEWS ────────────────────────────────────────────────────────── */
+    .news { background: var(--silver); }
+    .news-header {
+      display: flex; align-items: flex-end; justify-content: space-between;
+      margin-bottom: 2.75rem; gap: 1rem; flex-wrap: wrap;
+    }
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .news-card {
+      background: var(--white);
+      padding: 2rem 1.875rem;
+      display: flex; flex-direction: column;
+    }
+    .news-meta {
+      font-size: 0.775rem;
+      font-weight: 500;
+      color: var(--gray);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 0.875rem;
+    }
+    .news-card h3 {
+      font-family: var(--f-head);
+      font-size: 1.0625rem;
+      font-weight: 700;
+      color: var(--black);
+      line-height: 1.42;
+      flex: 1;
+      margin-bottom: 1.5rem;
+    }
+    .news-link {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--coral);
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      transition: gap 0.2s;
+    }
+    .news-link:hover { gap: 0.6rem; }
+
+    /* ── CTA BANNER ──────────────────────────────────────────────────── */
+    .cta-band {
+      background: var(--coral);
+      padding: clamp(4.5rem, 8vw, 7.5rem) var(--pad-x);
+      text-align: center;
+    }
+    .cta-band h2 {
+      font-family: var(--f-head);
+      font-size: clamp(2.25rem, 4.5vw, 3.75rem);
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+    .cta-band p {
+      font-size: 1.125rem;
+      color: rgba(255,255,255,0.78);
+      margin-bottom: 2.75rem;
+      max-width: 46ch;
+      margin-left: auto; margin-right: auto;
+      font-weight: 300;
+    }
+    .btn-white {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--white);
+      color: var(--coral);
+      font-family: var(--f-body);
+      font-size: 0.9375rem;
+      font-weight: 600;
+      padding: 0.9rem 2.25rem;
+      border-radius: 3px;
+      transition: opacity 0.2s;
+    }
+    .btn-white:hover { opacity: 0.9; }
+
+
+    /* ── FOOTER ──────────────────────────────────────────────────────── */
+    .footer {
+      background: var(--black);
+      padding: 4.5rem var(--pad-x) 2.5rem;
+      color: var(--white);
+    }
+    .footer-inner { max-width: var(--max-w); margin: 0 auto; }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr 1fr;
+      gap: 3rem;
+      padding-bottom: 3rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 2rem;
+    }
+    .footer-logo img {
+      height: 42px; width: auto;
+      filter: brightness(0) invert(1);
+      margin-bottom: 1.4rem;
+    }
+    .footer-desc {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.42);
+      line-height: 1.72;
+      max-width: 30ch;
+    }
+    .footer-col h4 {
+      font-family: var(--f-head);
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      margin-bottom: 1.25rem;
+    }
+    .footer-col ul li { margin-bottom: 0.65rem; }
+    .footer-col ul li a,
+    .footer-contact a {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.55);
+      transition: color 0.18s;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+    .footer-col ul li a:hover,
+    .footer-contact a:hover { color: var(--white); }
+    .footer-bottom {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; flex-wrap: wrap;
+    }
+    .footer-copy {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.25);
+    }
+
+    /* ── HAMBURGER & MOBILE DROPDOWN ────────────────────────────────── */
+    .nav-hamburger {
+      display: none;
+      background: none; border: none; cursor: pointer;
+      padding: 0.4rem;
+      flex-direction: column;
+      gap: 5px;
+      align-items: center;
+    }
+    .nav-hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--coral);
+      border-radius: 0;
+      flex-shrink: 0;
+    }
+    .mob-dropdown {
+      position: fixed;
+      top: var(--nav-h);
+      left: 0;
+      right: 0;
+      width: 100%;
+      background: var(--coral);
+      z-index: 99;
+      transform: translateY(-110%);
+      transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+      padding: 1.25rem 1.5rem 1.75rem;
+      border-radius: 0;
+      flex-direction: column;
+      align-items: flex-end;
+      display: none;
+    }
+    .mob-dropdown.open { transform: translateY(0); }
+    .mob-dropdown a {
+      color: var(--white);
+      font-family: var(--f-head);
+      font-size: 1.05rem;
+      font-weight: 500;
+      padding: 0.9rem 0;
+      text-align: right;
+      width: 100%;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      letter-spacing: 0.01em;
+    }
+    .mob-dropdown a:last-child { border-bottom: none; }
+    .mob-dropdown a.active { font-weight: 700; }
+
+    @media (max-width: 768px) {
+      .nav { padding: 0 1.25rem; }
+      .nav-left { display: none; }
+      .nav-right { display: none; }
+      .nav-logo { grid-column: 1; justify-self: start; }
+      .nav-logo img { height: 34px; }
+      .nav-hamburger { display: flex; align-items: center; grid-column: 3; justify-self: end; }
+      .mob-dropdown { display: flex; }
+      .mission .inner { grid-template-columns: 1fr; gap: 2rem; }
+      .problem .inner { grid-template-columns: 1fr; }
+      .problem-img-wrap {
+        margin-left: calc(-1 * var(--pad-x));
+        margin-right: calc(-1 * var(--pad-x));
+        margin-top: 1.5rem;
+      }
+
+      /* Sector panels: text above image */
+      .sector-panel {
+        height: auto;
+        display: flex;
+        flex-direction: column;
+      }
+      .sector-panel > img {
+        height: 210px;
+        width: 100%;
+        object-fit: cover;
+        order: 2;
+        flex-shrink: 0;
+        transition: transform 0.7s ease;
+      }
+      .sector-panel:hover > img { transform: scale(1.03); }
+      .sector-panel-overlay {
+        position: static;
+        background: #111;
+        order: 1;
+        display: block;
+        padding: 1.25rem 1.5rem 1.5rem;
+      }
+      .sector-panel-text { padding: 0; width: 100%; }
+      .sector-panel h3 { font-size: 1.35rem; }
+
+      .advantage .inner { grid-template-columns: 1fr; gap: 2.5rem; }
+      .news-grid { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr; gap: 2rem; }
+      .footer-desc { max-width: none; }
+
+      /* ── MOBILE HERO: static, no animation ── */
+      .he-section { clip-path: none; }
+      .he-hint { display: none !important; }
+      .he-bg { opacity: 0.6 !important; }
+      .he-media {
+        width: 92vw !important;
+        height: 52vh !important;
+        border-radius: 10px !important;
+        box-shadow: 0 0 30px rgba(0,0,0,0.35) !important;
+        clip-path: inset(2px round 10px) !important;
+      }
+      .he-media-dim { opacity: 0.5 !important; }
+      .he-word { transform: none !important; }
+    }
+  </style>
+  <link rel="stylesheet" href="transition.css">
+</head>
+<body>
+  <div id="ptt-overlay"></div>
+
+  <!-- ── NAV ──────────────────────────────────────────────────────────── -->
+  <nav class="nav">
+    <div class="nav-left">
+      <a href="index.html" class="active">Home</a>
+      <a href="news.html">News</a>
+      <a href="team.html">Our Team</a>
+    </div>
+    <a href="index.html" class="nav-logo" aria-label="DevEngine home">
+      <img src="brand_assets/devengine_logo_name.png" alt="DevEngine">
+    </a>
+    <div class="nav-right">
+      <a href="lets-partner.html" class="nav-cta">Let's Partner</a>
+    </div>
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+  <div class="mob-dropdown" id="mob-dropdown">
+    <a href="index.html" class="active">Home</a>
+    <a href="news.html">News</a>
+    <a href="team.html">Our Team</a>
+    <a href="lets-partner.html">Let's Partner</a>
+  </div>
+  <script>
+  (function(){
+    var btn  = document.getElementById('nav-hamburger');
+    var menu = document.getElementById('mob-dropdown');
+    if (!btn || !menu) return;
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      var open = menu.classList.toggle('open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    menu.querySelectorAll('a').forEach(function(a){
+      a.addEventListener('click', function(){
+        menu.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+      });
+    });
+    document.addEventListener('click', function(e){
+      if (menu.classList.contains('open') && !menu.contains(e.target)) {
+        menu.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+      }
+    });
+  })();
+  </script>
+
+  <!-- ── HERO EXPANSION ──────────────────────────────────────────────── -->
+  <section class="he-section" id="he-section">
+    <!-- Background image (fades out as video expands) -->
+    <div class="he-bg" id="he-bg">
+      <img src="home_page_photos/energy_storage_photo.png" alt="Energy storage facility">
+      <div class="he-bg-dim"></div>
+    </div>
+    <!-- Expanding video -->
+    <div class="he-media" id="he-media">
+      <video autoplay muted loop playsinline preload="auto">
+        <source src="home_page_photos/solar_video.mp4" type="video/mp4">
+      </video>
+      <div class="he-media-dim" id="he-media-dim"></div>
+    </div>
+    <!-- Text overlay -->
+    <div class="he-overlay">
+      <span class="he-word" id="he-word-left">Empowering</span>
+      <span class="he-word" id="he-word-right">Clean Energy Developers</span>
+      <p class="he-hint" id="he-hint">Scroll to expand ↓</p>
+    </div>
+  </section>
+
+  <!-- ── MISSION ───────────────────────────────────────────────────────── -->
+  <section class="section mission" id="mission">
+    <div class="inner">
+      <div>
+        <p class="label">Our Mission</p>
+        <h2 class="title">Why We Exist</h2>
+        <p class="body-copy">DevEngine partners with project developers — providing development capital and hands-on support to reduce risk in sustainable infrastructure projects, creating valuable platforms for infrastructure investors.</p>
+      </div>
+      <blockquote class="mission-quote">
+        Our mission is to provide sustainable infrastructure developers with precisely the right kind of capital, at the right time, with the right support to make their projects a reality.
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- ── PROBLEM ───────────────────────────────────────────────────────── -->
+  <section class="section problem">
+    <div class="inner">
+      <div>
+        <p class="label">The Market Gap</p>
+        <h2 class="title">The Problem We Address</h2>
+        <p class="body-copy">Traditional infrastructure investors focus on late-stage, fully-developed projects with minimal execution risk. But most developers need funding and expertise during earlier development phases — when the need is greatest and the risk is highest.</p>
+        <p class="body-copy" style="margin-top:1.1rem;">Additionally, development teams often lack access to professional development expertise. DevEngine bridges this gap: we partner at the earliest stages, bringing both capital and capabilities.</p>
+      </div>
+      <div class="problem-img-wrap">
+        <img src="home_page_photos/Funding+Options+2.webp" alt="Funding options across development stages">
+      </div>
+    </div>
+  </section>
+
+  <!-- ── HOW WE WORK ───────────────────────────────────────────────────── -->
+  <section class="how" id="approach">
+    <div class="how-header">
+      <p class="label" style="color:var(--coral)">Our Innovative Solution</p>
+      <h2 class="title">How We Work With Developers</h2>
+      <p class="body-copy">At DevEngine, we don't just provide capital — we empower your project with a top-notch support team that's there to guide you through every phase of the development process.</p>
+    </div>
+
+    <div class="how-features">
+
+      <!-- 01 -->
+      <div class="how-feature" data-how-feature>
+        <div class="how-feature-text">
+          <h3>Deep Expertise</h3>
+          <p>Our core team members are industry veterans who have "been there, done that." Their expertise and experience provide invaluable insights to developers.</p>
+        </div>
+        <div class="how-feature-img">
+          <img src="home_page_photos/solar_photo.jpg" alt="Deep Expertise — solar field">
+        </div>
+      </div>
+
+      <!-- 02 -->
+      <div class="how-feature reverse" data-how-feature>
+        <div class="how-feature-text">
+          <h3>Collaborative Capital</h3>
+          <p>We invest alongside our development partners at the ProjectCo level, ensuring interests are aligned to drive your project forward. We succeed when your project succeeds.</p>
+        </div>
+        <div class="how-feature-img">
+          <img src="home_page_photos/Our_Innovative_Solution_photos/Solar_Collaboration.jpeg" alt="Collaborative Capital — team collaboration">
+        </div>
+      </div>
+
+      <!-- 03 -->
+      <div class="how-feature" data-how-feature>
+        <div class="how-feature-text">
+          <h3>Hands-on Support</h3>
+          <p>We get in the trenches with you, bringing development best practices to your project. We are an extension of your team.</p>
+        </div>
+        <div class="how-feature-img">
+          <img src="home_page_photos/Our_Innovative_Solution_photos/Hands_on_support.jpg" alt="Hands-on Support — collaboration">
+        </div>
+      </div>
+
+      <!-- 04 -->
+      <div class="how-feature reverse" data-how-feature>
+        <div class="how-feature-text">
+          <h3>We Bring EDGE</h3>
+          <p>From advanced tools and trusted industry networks to a customized engineering-based development approach and deep market intelligence. This is what sets us apart and how we get your project built on time and on budget.</p>
+        </div>
+        <div class="how-feature-img">
+          <img src="home_page_photos/Our_Innovative_Solution_photos/We_Bring_Edge.jpeg" alt="We Bring EDGE — advanced tools">
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── SECTORS ───────────────────────────────────────────────────────── -->
+  <section class="section sectors-header" id="sectors">
+    <div class="inner">
+      <p class="label">Sectors We Support</p>
+      <h2 class="title">Where We Invest</h2>
+    </div>
+  </section>
+  <div class="sectors-panels">
+    <div class="sector-panel">
+      <img src="home_page_photos/solar_photo.jpg" alt="Distributed Energy Resources">
+      <div class="sector-panel-overlay">
+        <div class="sector-panel-text">
+          <p class="sector-panel-label">01 — Distributed Energy</p>
+          <h3>Distributed Energy Resources</h3>
+          <p>From community solar to large-scale agrivoltaics, we back developers bringing distributed clean generation to communities and businesses across the country.</p>
+        </div>
+      </div>
+    </div>
+    <div class="sector-panel">
+      <img src="home_page_photos/energy_storage_photo.png" alt="Battery Energy Storage">
+      <div class="sector-panel-overlay">
+        <div class="sector-panel-text">
+          <p class="sector-panel-label">02 — Energy Storage</p>
+          <h3>Battery Energy Storage</h3>
+          <p>Standalone storage and solar-plus-storage projects that stabilize grids and capture value at the intersection of generation and demand.</p>
+        </div>
+      </div>
+    </div>
+    <div class="sector-panel">
+      <img src="home_page_photos/Microgrid_photo.jpeg" alt="Microgrids" style="object-position: center 15%;">
+      <div class="sector-panel-overlay">
+        <div class="sector-panel-text">
+          <p class="sector-panel-label">03 — Microgrids</p>
+          <h3>Microgrids</h3>
+          <p>Resilient, self-sufficient power systems that integrate local generation, storage, and smart load management to serve communities and facilities at the grid edge.</p>
+        </div>
+      </div>
+    </div>
+    <div class="sector-panel">
+      <img src="home_page_photos/Data_Center_Adobe.jpeg" alt="Data Centers & Power Intensive Infrastructure">
+      <div class="sector-panel-overlay">
+        <div class="sector-panel-text">
+          <p class="sector-panel-label">04 — Data Centers</p>
+          <h3>Data Centers &amp; Power Intensive Infrastructure</h3>
+          <p>Behind-the-meter generation and purpose-built power infrastructure for data centers and other high-demand users requiring reliable, on-site energy.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ADVANTAGE ─────────────────────────────────────────────────────── -->
+  <section class="section advantage" id="advantage">
+    <div class="inner">
+      <div>
+        <p class="label">The DevEngine Advantage</p>
+        <h2 class="title">Why Partner With Us</h2>
+        <p class="body-copy">We combine experienced operators, flexible capital, and a transparent process to give your sustainable infrastructure project the best possible chance of success.</p>
+        <img src="home_page_photos/sunset_solar.jpeg" alt="Solar storage graphic" style="width:100%;margin-top:1.5rem;border-radius:8px;">
+      </div>
+      <div class="adv-list">
+        <div class="adv-item">
+          <div class="adv-icon">
+            <svg viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0"/></svg>
+          </div>
+          <div class="adv-text">
+            <strong>Seasoned Team</strong>
+            <p>A team with proven project development success across the clean energy and infrastructure spectrum.</p>
+          </div>
+        </div>
+        <div class="adv-item">
+          <div class="adv-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <div class="adv-text">
+            <strong>Flexible Development Capital</strong>
+            <p>Collaborative, not constrictive. Our capital structure adapts to where your project actually is in development.</p>
+          </div>
+        </div>
+        <div class="adv-item">
+          <div class="adv-icon">
+            <svg viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          </div>
+          <div class="adv-text">
+            <strong>Transparent &amp; Efficient Process</strong>
+            <p>A streamlined investment process designed to get capital deployed quickly where it's needed most.</p>
+          </div>
+        </div>
+        <div class="adv-item">
+          <div class="adv-icon">
+            <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          </div>
+          <div class="adv-text">
+            <strong>Aligned Interests</strong>
+            <p>We co-invest at the ProjectCo level. Your success is our success — full stop.</p>
+          </div>
+        </div>
+        <div class="adv-item">
+          <div class="adv-icon">
+            <svg viewBox="0 0 24 24"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-2 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+          </div>
+          <div class="adv-text">
+            <strong>Spring Lane Capital Backing</strong>
+            <p>Continued support from Spring Lane Capital along the project lifecycle.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA BAND ──────────────────────────────────────────────────────── -->
+  <section class="cta-band">
+    <h2>Join the DevEngine Community</h2>
+    <p>Let's build the future of sustainable infrastructure together.</p>
+    <a href="lets-partner.html" class="btn-white">Get In Touch →</a>
+  </section>
+
+  <!-- ── FOOTER ────────────────────────────────────────────────────────── -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div>
+          <div class="footer-logo">
+            <img src="brand_assets/devengine_logo_name.png" alt="DevEngine">
+          </div>
+          <p class="footer-desc">Providing sustainable infrastructure developers with the capital and support to make their projects a reality.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Navigate</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="news.html">News</a></li>
+            <li><a href="team.html">Our Team</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <div class="footer-contact">
+            <a href="mailto:info@devengine.dev">info@devengine.dev</a>
+            <a href="tel:2124164475">212.416.4475</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">© DevEngine 2026. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ── HERO EXPANSION SCRIPT ──────────────────────────────────────── -->
+  <script>
+  (function () {
+    var progress   = 0;
+    var expanded   = false;
+    var touchStartY = 0;
+    var isMobile   = window.innerWidth < 768;
+
+    var bg       = document.getElementById('he-bg');
+    var media    = document.getElementById('he-media');
+    var mediaDim = document.getElementById('he-media-dim');
+    var wLeft    = document.getElementById('he-word-left');
+    var wRight   = document.getElementById('he-word-right');
+    var hint     = document.getElementById('he-hint');
+
+    function render() {
+      var p  = progress;
+      var m  = isMobile;
+      var vw = window.innerWidth;
+      var vh = window.innerHeight;
+
+      /* Video dimensions — start large enough so text sits only on the video */
+      var startW = m ? 320 : Math.round(vw * 0.65);
+      var startH = m ? 450 : Math.round(vh * 0.60);
+      var maxW   = m ? vw : vw * 0.95;
+      var maxH   = vh * 0.85;
+      var w = Math.min(startW + p * (maxW - startW), maxW);
+      var h = Math.min(startH + p * (maxH - startH), maxH);
+      media.style.width  = w + 'px';
+      media.style.height = h + 'px';
+
+      /* Title split */
+      var tx = p * (m ? 180 : 150);
+      wLeft.style.transform  = 'translateX(-' + tx + 'vw)';
+      wRight.style.transform = 'translateX('  + tx + 'vw)';
+
+      /* Fades */
+      bg.style.opacity       = (1 - p) * 0.6;
+      mediaDim.style.opacity = Math.max(0, 0.5 - p * 0.3);
+      hint.style.opacity     = Math.max(0, 1 - p * 4);
+    }
+
+    function onWheel(e) {
+      /* Collapse: at top of page, scroll up while expanded */
+      if (expanded && e.deltaY < 0 && window.scrollY <= 5) {
+        expanded = false;
+        e.preventDefault();
+        return;
+      }
+      /* Expand: intercept scroll until animation completes */
+      if (!expanded) {
+        e.preventDefault();
+        progress = Math.min(Math.max(progress + e.deltaY * 0.0009, 0), 1);
+        if (progress >= 1) { expanded = true; }
+        render();
+      }
+    }
+
+    /* Keep page pinned to top while animating */
+    function onScroll() {
+      if (!expanded) { window.scrollTo(0, 0); }
+    }
+
+    function onTouchStart(e) {
+      touchStartY = e.touches[0].clientY;
+    }
+
+    function onTouchMove(e) {
+      if (!touchStartY) return;
+      var touchY = e.touches[0].clientY;
+      var deltaY = touchStartY - touchY;
+
+      if (expanded && deltaY < -20 && window.scrollY <= 5) {
+        expanded = false;
+        e.preventDefault();
+        return;
+      }
+      if (!expanded) {
+        e.preventDefault();
+        var factor = deltaY < 0 ? 0.008 : 0.005;
+        progress = Math.min(Math.max(progress + deltaY * factor, 0), 1);
+        if (progress >= 1) { expanded = true; }
+        render();
+        touchStartY = touchY;
+      }
+    }
+
+    function onTouchEnd() { touchStartY = 0; }
+
+    function onResize() {
+      isMobile = window.innerWidth < 768;
+      if (!isMobile) render();
+    }
+
+    if (!isMobile) {
+      window.addEventListener('wheel',      onWheel,      { passive: false });
+      window.addEventListener('scroll',     onScroll);
+      window.addEventListener('touchstart', onTouchStart, { passive: false });
+      window.addEventListener('touchmove',  onTouchMove,  { passive: false });
+      window.addEventListener('touchend',   onTouchEnd);
+      render();
+    }
+    window.addEventListener('resize', onResize);
+  })();
+  </script>
+
+  <script src="transition.js"></script>
+
+  <!-- Scroll-driven parallax for How We Work — mirrors framer-motion useScroll/useTransform -->
+  <script>
+  (function () {
+    var features = document.querySelectorAll('[data-how-feature]');
+    if (!features.length) return;
+
+    function clamp(v, lo, hi) { return v < lo ? lo : v > hi ? hi : v; }
+    function lerp(a, b, t)    { return a + (b - a) * t; }
+
+    function update() {
+      var vh = window.innerHeight;
+      for (var i = 0; i < features.length; i++) {
+        var el   = features[i];
+        var rect = el.getBoundingClientRect();
+        var h    = rect.height;
+
+        /* Mirrors offset: ["start end", "center start"]
+           progress=0 when el top == viewport bottom
+           progress=1 when el center == viewport top            */
+        var raw  = (vh - rect.top) / (vh + h / 2);
+        var prog = clamp(raw, 0, 1);
+
+        /* Image: clip-path wipes from right→left + fade in, over [0 → 0.7] */
+        var imgProg  = clamp(prog / 0.7, 0, 1);
+        var insetPct = lerp(100, 0, imgProg).toFixed(2);
+        var imgEl    = el.querySelector('.how-feature-img');
+        if (imgEl) {
+          imgEl.style.clipPath = 'inset(0 ' + insetPct + '% 0 0)';
+          imgEl.style.opacity  = imgProg.toFixed(3);
+        }
+
+        /* Text: slides up from -50px → 0 + fade in, over [0 → 0.7] */
+        var textEl = el.querySelector('.how-feature-text');
+        if (textEl) {
+          var ty = lerp(50, 0, imgProg).toFixed(2);
+          textEl.style.transform = 'translateY(' + ty + 'px)';
+          textEl.style.opacity   = imgProg.toFixed(3);
+        }
+      }
+    }
+
+    /* rAF throttle */
+    var ticking = false;
+    function onScroll() {
+      if (!ticking) {
+        requestAnimationFrame(function () { update(); ticking = false; });
+        ticking = true;
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', update);
+    update(); /* run once on load to set initial states */
+  })();
+  </script>
+</body>
+</html>
