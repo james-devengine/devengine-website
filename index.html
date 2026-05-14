@@ -410,7 +410,12 @@
       gap: clamp(3rem, 6vw, 7rem);
       align-items: start;
     }
-    .adv-list { min-width: 0; }
+    .adv-list {
+      min-width: 0;
+      background: var(--white);
+      border-radius: 16px;
+      padding: 0 2rem;
+    }
     .adv-item {
       display: grid;
       grid-template-columns: 38px 1fr;
@@ -419,7 +424,8 @@
       padding: 1.6rem 0;
       border-bottom: 1px solid var(--silver);
     }
-    .adv-item:first-child { padding-top: 0; border-top: 1px solid var(--silver); }
+    .adv-item:first-child { padding-top: 1.6rem; border-top: none; }
+    .adv-item:last-child { border-bottom: none; padding-bottom: 1.6rem; }
     .adv-icon {
       width: 38px; height: 38px;
       background: var(--coral);
